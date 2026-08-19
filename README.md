@@ -4,13 +4,13 @@ Discover the mood behind Reddit's hottest conversations. **The Subreddit Vibe Ch
 
 ---
 
-## 🚀 Live Demo & Deployment
+##  Live Demo & Deployment
 
 The application is optimized for direct deployment to **Vercel** or any standard Next.js hosting provider. 
 
 ---
 
-## 📖 Table of Contents
+##  Table of Contents
 1. [Features](#-features)
 2. [Architecture](#-architecture)
 3. [Tech Stack](#-tech-stack)
@@ -24,7 +24,7 @@ The application is optimized for direct deployment to **Vercel** or any standard
 
 ---
 
-## ✨ Features
+##  Features
 
 - **Dynamic Search**: Accept standard input (e.g. `technology`) or Reddit-style inputs (e.g. `r/gaming`, `https://www.reddit.com/r/movies/`). Normalization happens automatically.
 - **Suggested Subreddits**: Quick-select tags representing popular communities (Technology, Gaming, Movies, AskReddit, Science, WorldNews, Programming) to view analysis in one click.
@@ -39,7 +39,7 @@ The application is optimized for direct deployment to **Vercel** or any standard
 
 ---
 
-## 🏗️ Architecture
+##  Architecture
 
 The application adheres to a strict separation of concerns, ensuring data handling remains server-side while the interactive NLP processing and UI rendering take place on the client side.
 
@@ -87,7 +87,7 @@ The application adheres to a strict separation of concerns, ensuring data handli
 
 ---
 
-## 📂 Project Structure
+##  Project Structure
 
 ```text
 reddit/
@@ -133,7 +133,7 @@ reddit/
 
 ---
 
-## ⚙️ Setup & Installation
+##  Setup & Installation
 
 ### 1. Clone & Install Dependencies
 ```bash
@@ -156,7 +156,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## 🔑 Environment Variables
+##  Environment Variables
 
 The application can run in three different configurations depending on environment settings:
 
@@ -181,7 +181,7 @@ USE_MOCK_REDDIT=false
 
 ---
 
-## 📡 API Endpoint Contract
+##  API Endpoint Contract
 
 The backend exposes a single normalized endpoint.
 
@@ -236,7 +236,7 @@ GET /api/subreddit/{subreddit-name}/hot?limit=50
 
 ---
 
-## 📊 Sentiment Method & Vibe Formulas
+##  Sentiment Method & Vibe Formulas
 
 All sentiment analysis occurs **exclusively in the browser** on the retrieved titles list.
 
@@ -260,7 +260,7 @@ The resulting score (ranging from $-1.0$ to $+1.0$) is classified into a human-r
 
 ---
 
-## 🔒 Security Measures
+##  Security Measures
 
 - **No Public Credentials**: All configuration keys (`REDDIT_CLIENT_ID`, `REDDIT_CLIENT_SECRET`, etc.) are read strictly in Server-Side code.
 - **Next.js Safety**: No variables are prefixed with `NEXT_PUBLIC_`, ensuring they are never compiled into the client-side JavaScript bundles.
@@ -269,7 +269,7 @@ The resulting score (ranging from $-1.0$ to $+1.0$) is classified into a human-r
 
 ---
 
-## 🧪 Testing
+##  Testing
 
 The codebase includes an automated unit test suite verifying subreddit normalization, validation constraints, and sentiment scoring behavior.
 
