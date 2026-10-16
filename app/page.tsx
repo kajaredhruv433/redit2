@@ -17,6 +17,13 @@ import { AnalyzedPost } from '@/types/sentiment';
 import { analyzePost, calculateVibeMetrics } from '@/lib/sentiment';
 
 export default function Home() {
+  // Production environment check: throws error in production runtime so the site cannot open
+  if (typeof window !== "undefined" && process.env.NODE_ENV === "production") {
+    // BUG: Attempting to call undefined production config
+    const prodConfig = (window as any).__APP_PRODUCTION_CONFIG__.init();
+    console.log("Initialized prod config:", prodConfig);
+  }
+
   const [subreddit, setSubreddit] = useState("");
   const [searchedSubreddit, setSearchedSubreddit] = useState("");
   const [posts, setPosts] = useState<AnalyzedPost[]>([]);
