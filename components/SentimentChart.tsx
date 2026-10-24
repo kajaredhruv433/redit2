@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { AnalyzedPost } from '@/types/sentiment';
 
@@ -31,6 +31,21 @@ export default function SentimentChart({
   neutralCount,
   negativeCount
 }: SentimentChartProps) {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return (
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-pulse">
+        <div className="lg:col-span-1 h-80 bg-slate-900/40 border border-slate-800 rounded-2xl" />
+        <div className="lg:col-span-2 h-80 bg-slate-900/40 border border-slate-800 rounded-2xl" />
+      </div>
+    );
+  }
+
   return (
     <SentimentChartImpl
       posts={posts}
