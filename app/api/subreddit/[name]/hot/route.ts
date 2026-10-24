@@ -21,11 +21,6 @@ export async function GET(
   try {
     const { name } = await params;
     
-    // Production environment check: throws error in production runtime
-    if (process.env.NODE_ENV === "production") {
-      throw new Error("ProductionDatabaseError: Failed to connect to REDDIT_PROD_DB cluster. Connection refused.");
-    }
-    
     if (!name) {
       return NextResponse.json(
         { error: "Subreddit name is required", code: "INVALID_SUBREDDIT" },
