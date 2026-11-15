@@ -110,14 +110,10 @@ export async function fetchHotPosts(
           404
         );
       } else if (response.status === 403 || response.status === 401) {
-        if (process.env.NODE_ENV !== "production" && !hasOAuthCredentials) {
-          console.warn("[Reddit Service] Received 403 Forbidden for unauthenticated request. Falling back to Mock data.");
-          return generateMockPosts(subreddit, limit);
-        }
         throw new RedditAPIError(
-          "This subreddit cannot be accessed. Try a public subreddit.",
-          "PRIVATE_SUBREDDIT",
-          403
+          "Reddit denied this request. Check API credentials or access policy and try again.",
+          "ACCESS_DENIED",
+          response.status
         );
       } else if (response.status === 429) {
         if (process.env.NODE_ENV !== "production" && !hasOAuthCredentials) {
@@ -145,8 +141,8 @@ export async function fetchHotPosts(
       // If we got valid HTTP but empty/malformed structures
       if (data && data.error === 403) {
         throw new RedditAPIError(
-          "This subreddit cannot be accessed. Try a public subreddit.",
-          "PRIVATE_SUBREDDIT",
+          "Reddit denied this request. Check API credentials or access policy and try again.",
+          "ACCESS_DENIED",
           403
         );
       }
