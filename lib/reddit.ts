@@ -22,8 +22,8 @@ function decodeHtml(value: string): string {
     .replace(/&#x27;|&#39;/g, "'")
     .replace(/&lt;/g, "<")
     .replace(/&gt;/g, ">")
-    .replace(/&#(\\d+);/g, (_, code) => String.fromCharCode(Number(code)))
-    .replace(/&#x([\\da-f]+);/gi, (_, code) => String.fromCharCode(parseInt(code, 16)));
+    .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(Number(code)))
+    .replace(/&#x([\da-f]+);/gi, (_, code) => String.fromCharCode(parseInt(code, 16)));
 }
 
 /**
@@ -45,7 +45,7 @@ async function fetchPublicHtmlPosts(
 
   const html = await response.text();
   const posts: RedditPost[] = [];
-  const postTags = html.matchAll(/<shreddit-post\\b([^>]*)>/gi);
+  const postTags = html.matchAll(/<shreddit-post\b([^>]*)>/gi);
   const readAttribute = (attributes: string, name: string) => {
     const escapedName = name.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\\\$&");
     const match = attributes.match(new RegExp(`(?:^|\\\\s)${escapedName}=["']([^"']*)["']`, "i"));
@@ -119,6 +119,15 @@ export async function fetchHotPosts(
   );
 
   const userAgent = process.env.REDDIT_USER_AGENT || "web:subreddit-vibe-check:v1.0.0 (by /u/reddit-vibe-check-dev)";
+
+  // Fetch the public subreddit page first; ordinary post browsing should not
+  // depend on Reddit API credentials or JSON API availability.
+  try {
+    const htmlPosts = await fetchPublicHtmlPosts(subreddit, limit, userAgent);
+    if (htmlPosts.length > 0) return htmlPosts;
+  } catch (htmlError) {
+    console.warn("[Reddit Service] Public listing fetch failed; trying the JSON fallback:", htmlError);
+  }
 
   let response: Response;
   let useAuthenticatedFlow = false;
