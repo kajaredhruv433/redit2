@@ -47,9 +47,11 @@ async function fetchPublicHtmlPosts(
   const posts: RedditPost[] = [];
   const postTags = html.matchAll(/<shreddit-post\b([^>]*)>/gi);
   const readAttribute = (attributes: string, name: string) => {
-    const escapedName = name.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\\\$&");
-    const match = attributes.match(new RegExp(`(?:^|\\\\s)${escapedName}=["']([^"']*)["']`, "i"));
-    return match ? decodeHtml(match[1]) : "";
+    // `name` is always one of the fixed attribute names used below. Keep the
+    // whitespace escape to one backslash in the RegExp source so it matches
+    // real HTML attribute boundaries (rather than a literal "\\s").
+    const match = attributes.match(new RegExp(`(?:^|\\s)${name}=(?:"([^"]*)"|'([^']*)')`, "i"));
+    return match ? decodeHtml(match[1] ?? match[2]) : "";
   };
 
   for (const tag of postTags) {
